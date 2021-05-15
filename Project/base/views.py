@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 class PublisherAPIView(APIView):
 
     def get(self, request):
-        logger.info('list of a users')
+        logger.info('list of a publishers')
         publishers = Publisher.objects.all()
         serializer = PublisherSerializer(publishers, many=True)
 
@@ -156,7 +156,7 @@ class CategoryViewSet(viewsets.ViewSet):
             return Response({}, status=status.HTTP_400_BAD_REQUEST)
         category = Category.objects.get(id=id)
         category.delete()
-        return Response({}, status=status.HTTP_200_OK)
+        return Response('succes', status=status.HTTP_200_OK)
 
 
 class GenreViewSet(viewsets.ViewSet):
@@ -198,7 +198,7 @@ class GenreViewSet(viewsets.ViewSet):
             return Response({}, status=status.HTTP_400_BAD_REQUEST)
         genre = Genre.objects.get(id=id)
         genre.delete()
-        return Response({}, status=status.HTTP_200_OK)
+        return Response('succes', status=status.HTTP_200_OK)
 
 
 class TypeViewSet(viewsets.ViewSet):
@@ -219,12 +219,12 @@ class TypeViewSet(viewsets.ViewSet):
     def create(self, request):
         logger.info('creation a type')
         if request.user.role == "Admin":
-            return Response({}, status=status.HTTP_400_BAD_REQUEST)
+            return Response('succes', status=status.HTTP_400_BAD_REQUEST)
 
         serializer = TypeSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-        return Response({}, status=status.HTTP_201_CREATED)
+        return Response('succes', status=status.HTTP_201_CREATED)
 
     def update(self, request, id):
         logger.info('updating a type')
@@ -241,4 +241,4 @@ class TypeViewSet(viewsets.ViewSet):
             return Response({}, status=status.HTTP_400_BAD_REQUEST)
         type = Type.objects.get(id=id)
         type.delete()
-        return Response({}, status=status.HTTP_200_OK)
+        return Response('succes', status=status.HTTP_200_OK)

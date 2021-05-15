@@ -1,12 +1,13 @@
 from django.core.validators import MaxLengthValidator
 from rest_framework import serializers
-
+import re
 from auth_.serializers import CustomUserSerializerForComment
 from base.models import Publisher, Author, Category, Genre, Type, Rating, JournalBase
 from utils.constants import cities, countries
 
 
 class PublisherSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
     name = serializers.CharField(max_length=255)
     address = serializers.CharField(max_length=400)
     website = serializers.CharField(max_length=300)
@@ -38,13 +39,13 @@ class PublisherSerializer(serializers.Serializer):
         raise serializers.ValidationError("No such country in the list of validation")
 
     def validate_website(self, value):
-        if value == '@^(http\:\/\/|https\:\/\/)?([a-z0-9][a-z0-9\-]*\.)+[a-z0-9][a-z0-9\-]*$@i':
+        if re.search('(http\:\/\/|https\:\/\/)?([a-z0-9][a-z0-9\-]*\.)+[a-z0-9][a-z0-9\-]*', value):
             return value
         raise serializers.ValidationError("Not correct input")
 
 
-
 class AuthorSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
     first_name = serializers.CharField(max_length=255)
     last_name = serializers.CharField(max_length=255)
     email = serializers.EmailField()
@@ -60,7 +61,8 @@ class AuthorSerializer(serializers.Serializer):
         return value
 
     def validate_email(self, email):
-        if email == '/^[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}$/i':
+        expresion = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+        if re.search(expresion, email):
             return email
         raise serializers.ValidationError("The email is not entered correctly")
 
@@ -96,6 +98,7 @@ class CategorySerializer(serializers.Serializer):
 
 
 class GenreSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
     name = serializers.CharField(max_length=255)
     description = serializers.CharField(max_length=1000, required=False, validators=[MaxLengthValidator(1000)])
 

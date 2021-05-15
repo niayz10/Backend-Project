@@ -23,12 +23,15 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
 
 class CustomUserSerializerAll(CustomUserSerializer):
+    id = serializers.IntegerField(read_only=True)
+
     class Meta:
         model = CustomUser
         fields = '__all__'
 
 
-class CustomUserSerializerForComment(serializers.ModelSerializer):
+class CustomUserSerializerForComment(CustomUserSerializer):
+    id = serializers.IntegerField(read_only=True)
     class Meta:
         model = CustomUser
-        fields = ('first_name', 'last_name')
+        fields = ('id', 'first_name', 'last_name')

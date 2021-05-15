@@ -73,7 +73,7 @@ class BookViewSet(viewsets.ViewSet):
         if not comment.exists:
             return Response({}, status=status.HTTP_400_BAD_REQUEST)
         comment[0].delete()
-        return Response({}, status=status.HTTP_200_OK)
+        return Response('succes', status=status.HTTP_200_OK)
 
     def retrieve_comment(self, request, id, comment_id):
         logger.info('retrieve of a comment')
@@ -114,7 +114,7 @@ class BookViewSet(viewsets.ViewSet):
             return Response({}, status=status.HTTP_400_BAD_REQUEST)
         book = Book.objects.get(id=id)
         book.delete()
-        return Response({}, status=status.HTTP_200_OK)
+        return Response('succes', status=status.HTTP_200_OK)
 
 
 class ComicsViewSet(viewsets.ViewSet):
@@ -156,7 +156,7 @@ class ComicsViewSet(viewsets.ViewSet):
     def modify_comment(self, request, id, comment_id):
         logger.info('updating of comment')
         if request.user.role == "Admin":
-            return Response({}, status=status.HTTP_400_BAD_REQUEST)
+            return Response('succes', status=status.HTTP_400_BAD_REQUEST)
 
         serializer = CommentSerializerForComics(instance=CommentForComics.objects.get(id=comment_id, user=request.user, journal_id=id),
                                        data=request.data)
@@ -172,7 +172,7 @@ class ComicsViewSet(viewsets.ViewSet):
         if not comment.exists:
             return Response({}, status=status.HTTP_400_BAD_REQUEST)
         comment[0].delete()
-        return Response({}, status=status.HTTP_200_OK)
+        return Response('succes', status=status.HTTP_200_OK)
 
     def retrieve_comment(self, request, id, comment_id):
         logger.info('retrieve of a comment')
@@ -212,7 +212,7 @@ class ComicsViewSet(viewsets.ViewSet):
             return Response({}, status=status.HTTP_400_BAD_REQUEST)
         comics = Comics.objects.get(id=id)
         comics.delete()
-        return Response({}, status=status.HTTP_200_OK)
+        return Response('succes', status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])

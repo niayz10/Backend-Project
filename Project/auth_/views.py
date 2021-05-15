@@ -15,6 +15,12 @@ logger = logging.getLogger(__name__)
 class User(viewsets.ViewSet):
     parser_classes = [MultiPartParser, FormParser, JSONParser]
 
+    def list_of_users(self, request):
+        logger.info('list of a users')
+        users = CustomUser.objects.all()
+        serializer = CustomUserSerializer(users, many=True)
+        return Response(serializer.data)
+
     def create(self, request):
         logger.info('Registration of a user')
         email = request.data.get("email")
